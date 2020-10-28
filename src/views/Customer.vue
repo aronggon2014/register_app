@@ -35,6 +35,29 @@
       <v-btn color="error" class="mr-4" @click="reset">
         เคลียร์
       </v-btn>
+      <v-row>
+        <v-col cols="12">
+          <!-- ตารางแสดงข้อมูล -->
+          <v-card>
+            <v-card-title>
+              ข้อมูลลูกค้า
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              :headers="headers"
+              :items="desserts"
+              :search="search"
+            ></v-data-table>
+          </v-card>
+        </v-col>
+      </v-row>
       <!-- <v-btn
       color="warning"
       @click="resetValidation"
@@ -59,7 +82,6 @@ export default {
       v => !!v || "กรุณากรอกนามสกุล",
       v => (v && v.length <= 30) || "นามสกุลต้องมีขนาดไม่เกิน 30 ตัวอักษร"
     ],
-    
     checkboxRules: [v => !!v || "คุณต้องกรอกยอมรับเงื่อนนไขก่อนสมัครสมาชิก"],
     select: null,
     items: ["Item 1", "Item 2", "Item 3", "Item 4"],
@@ -109,16 +131,6 @@ export default {
       axios.post('http://localhost:3000/api/customers/',{
             "c_name": this.name,
             "c_lastname": this.lastname,
-            "c_email": this.email,
-            "c_tel": this.tel,
-            "c_num": this.a_number,
-            "c_mu": this.a_group,
-            "c_tanon": this.a_road,
-            "c_soi": this.a_lane,
-            "c_tumbon": this.a_subdis,
-            "c_amphor": this.a_dis,
-            "c_jung":this.a_province,
-            "c_sex": this.select
       }).then((res)=>{
         console.log(res)
       });
@@ -126,11 +138,7 @@ export default {
 
         this.desserts.push({
             fullname:`${this.name}${this.lastname}`,
-            tel:`${this.tel}`,
-            email:`${this.email}`,
-            sex:`${this.select}`,
-            address:`${this.a_number}ม.${this.a_group}ถ.${this.a_road}ซ.${this.a_lane}ต.${this.a_subdis}อ.${this.a_dis}จ.${this.a_province}`,
-        });
+            });
       }
     },
     reset() {
